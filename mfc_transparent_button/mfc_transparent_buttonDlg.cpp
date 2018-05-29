@@ -64,6 +64,7 @@ BEGIN_MESSAGE_MAP(Cmfc_transparent_buttonDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON_TEST0, &Cmfc_transparent_buttonDlg::OnBnClickedButtonTest0)
+	ON_WM_CTLCOLOR()
 END_MESSAGE_MAP()
 
 
@@ -99,6 +100,10 @@ BOOL Cmfc_transparent_buttonDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	// TODO: Add extra initialization here
+	CBitmap bitmap;
+	bitmap.LoadBitmap(IDB_BACKGROUND);
+	m_brush.CreatePatternBrush(&bitmap);
+	bitmap.DeleteObject();
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -155,4 +160,19 @@ HCURSOR Cmfc_transparent_buttonDlg::OnQueryDragIcon()
 void Cmfc_transparent_buttonDlg::OnBnClickedButtonTest0()
 {
 	// TODO: Add your control notification handler code here
+}
+
+
+HBRUSH Cmfc_transparent_buttonDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+{
+	HBRUSH hbr = CDialogEx::OnCtlColor(pDC, pWnd, nCtlColor);
+
+	// TODO:  Change any attributes of the DC here
+	if (pWnd == this)
+	{
+		return m_brush;
+	}
+
+	// TODO:  Return a different brush if the default is not desired
+	return hbr;
 }
