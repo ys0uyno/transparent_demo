@@ -11,6 +11,7 @@
 #define new DEBUG_NEW
 #endif
 
+#define CORNER_SIZE 2
 
 // CAboutDlg dialog used for App About
 
@@ -63,8 +64,9 @@ BEGIN_MESSAGE_MAP(Cmfc_transparent_buttonDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
-	ON_BN_CLICKED(IDC_BUTTON_TEST0, &Cmfc_transparent_buttonDlg::OnBnClickedButtonTest0)
 	ON_WM_CTLCOLOR()
+	ON_WM_SIZE()
+	ON_BN_CLICKED(IDC_BUTTON_TEST0, &Cmfc_transparent_buttonDlg::OnBnClickedButtonTest0)
 END_MESSAGE_MAP()
 
 
@@ -146,6 +148,52 @@ void Cmfc_transparent_buttonDlg::OnPaint()
 	}
 	else
 	{
+		CPaintDC dc(this);
+
+		CRect rect;
+		GetClientRect(rect);
+
+		// outside of window border
+		CPen *old_pen = NULL;
+		CPen new_pen1(PS_SOLID, 1, RGB(27, 147, 186));
+		old_pen = dc.SelectObject(&new_pen1);
+
+		dc.MoveTo(rect.left, CORNER_SIZE);
+		dc.LineTo(CORNER_SIZE, rect.top);
+		dc.LineTo(rect.right - CORNER_SIZE - 1, rect.top);
+		dc.LineTo(rect.right - 1, CORNER_SIZE);
+		dc.LineTo(rect.right - 1, rect.bottom - CORNER_SIZE - 1);
+		dc.LineTo(rect.right - CORNER_SIZE - 1, rect.bottom - 1);
+		dc.LineTo(CORNER_SIZE, rect.bottom - 1);
+		dc.LineTo(rect.left, rect.bottom - CORNER_SIZE - 1);
+		dc.LineTo(rect.left, CORNER_SIZE);
+
+		// fill in gaps
+		dc.MoveTo(rect.left + 1, CORNER_SIZE);
+		dc.LineTo(CORNER_SIZE + 1, rect.top);
+		dc.MoveTo(rect.right - CORNER_SIZE - 1, rect.top + 1);
+		dc.LineTo(rect.right - 1, CORNER_SIZE + 1);
+		dc.MoveTo(rect.right - 2, rect.bottom - CORNER_SIZE - 1);
+		dc.LineTo(rect.right - CORNER_SIZE - 1, rect.bottom - 1);
+		dc.MoveTo(CORNER_SIZE, rect.bottom - 2);
+		dc.LineTo(rect.left, rect.bottom - CORNER_SIZE - 2);
+
+		dc.SelectObject(old_pen);
+
+		// inside of window border
+		CPen new_pen2(PS_SOLID, 1, RGB(196, 234, 247));
+		old_pen = dc.SelectObject(&new_pen2);
+
+		dc.MoveTo(rect.left + 1, CORNER_SIZE + 1);
+		dc.LineTo(CORNER_SIZE + 1, rect.top + 1);
+		dc.LineTo(rect.right - CORNER_SIZE - 2, rect.top + 1);
+		dc.LineTo(rect.right - 2, CORNER_SIZE + 1);
+		dc.LineTo(rect.right - 2, rect.bottom - CORNER_SIZE - 2);
+		dc.LineTo(rect.right - CORNER_SIZE - 2, rect.bottom - 2);
+		dc.LineTo(CORNER_SIZE + 1, rect.bottom - 2);
+		dc.LineTo(rect.left + 1, rect.bottom - CORNER_SIZE - 2);
+		dc.LineTo(rect.left + 1, CORNER_SIZE + 1);
+
 		CDialogEx::OnPaint();
 	}
 }
@@ -156,12 +204,6 @@ HCURSOR Cmfc_transparent_buttonDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
 }
-
-void Cmfc_transparent_buttonDlg::OnBnClickedButtonTest0()
-{
-	// TODO: Add your control notification handler code here
-}
-
 
 HBRUSH Cmfc_transparent_buttonDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
@@ -175,4 +217,44 @@ HBRUSH Cmfc_transparent_buttonDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlCol
 
 	// TODO:  Return a different brush if the default is not desired
 	return hbr;
+}
+
+void Cmfc_transparent_buttonDlg::OnSize(UINT nType, int cx, int cy)
+{
+	CDialogEx::OnSize(nType, cx, cy);
+
+	// TODO: Add your message handler code here
+
+	// remove the four sharp corners of the border
+	if (nType != SIZE_MAXIMIZED)
+	{
+		CRect rc;
+		GetClientRect(&rc);
+
+		CRgn rgn;
+		CPoint points[8] =
+		{
+			CPoint(rc.left, CORNER_SIZE),
+			CPoint(CORNER_SIZE, rc.top),
+			CPoint(rc.right - CORNER_SIZE, rc.top),
+			CPoint(rc.right, CORNER_SIZE),
+			CPoint(rc.right, rc.bottom - CORNER_SIZE - 1),
+			CPoint(rc.right - CORNER_SIZE - 1, rc.bottom),
+			CPoint(CORNER_SIZE + 1, rc.bottom),
+			CPoint(rc.left, rc.bottom - CORNER_SIZE - 1)
+		};
+
+		int nPolyCounts[1] = {8};
+		int dd = rgn.CreatePolyPolygonRgn(points, nPolyCounts, 1, WINDING);
+		SetWindowRgn(rgn, TRUE);
+	}
+	else
+	{
+		SetWindowRgn(NULL, FALSE);
+	}
+}
+
+void Cmfc_transparent_buttonDlg::OnBnClickedButtonTest0()
+{
+	// TODO: Add your control notification handler code here
 }
