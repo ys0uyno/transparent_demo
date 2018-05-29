@@ -63,6 +63,7 @@ BEGIN_MESSAGE_MAP(Cmfc_transparent_buttonDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_BN_CLICKED(IDC_BUTTON_TEST0, &Cmfc_transparent_buttonDlg::OnBnClickedButtonTest0)
 END_MESSAGE_MAP()
 
 
@@ -151,3 +152,7 @@ HCURSOR Cmfc_transparent_buttonDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+void Cmfc_transparent_buttonDlg::OnBnClickedButtonTest0()
+{
+	// TODO: Add your control notification handler code here
+}
