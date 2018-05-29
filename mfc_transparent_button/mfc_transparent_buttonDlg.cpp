@@ -67,6 +67,7 @@ BEGIN_MESSAGE_MAP(Cmfc_transparent_buttonDlg, CDialogEx)
 	ON_WM_CTLCOLOR()
 	ON_WM_SIZE()
 	ON_BN_CLICKED(IDC_BUTTON_TEST0, &Cmfc_transparent_buttonDlg::OnBnClickedButtonTest0)
+	ON_WM_LBUTTONDOWN()
 END_MESSAGE_MAP()
 
 
@@ -252,6 +253,14 @@ void Cmfc_transparent_buttonDlg::OnSize(UINT nType, int cx, int cy)
 	{
 		SetWindowRgn(NULL, FALSE);
 	}
+}
+
+void Cmfc_transparent_buttonDlg::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: Add your message handler code here and/or call default
+	PostMessage(WM_NCLBUTTONDOWN, HTCAPTION, MAKELPARAM(point.x, point.y));
+
+	CDialogEx::OnLButtonDown(nFlags, point);
 }
 
 void Cmfc_transparent_buttonDlg::OnBnClickedButtonTest0()
