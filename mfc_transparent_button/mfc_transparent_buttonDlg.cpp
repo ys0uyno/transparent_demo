@@ -58,6 +58,9 @@ Cmfc_transparent_buttonDlg::Cmfc_transparent_buttonDlg(CWnd* pParent /*=NULL*/)
 void Cmfc_transparent_buttonDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_BUTTON_MINIMIZE, m_button_minimize);
+	DDX_Control(pDX, IDC_BUTTON_CLOSE, m_button_close);
+	DDX_Control(pDX, IDC_BUTTON_TEST0, m_button_test0);
 }
 
 BEGIN_MESSAGE_MAP(Cmfc_transparent_buttonDlg, CDialogEx)
@@ -68,6 +71,8 @@ BEGIN_MESSAGE_MAP(Cmfc_transparent_buttonDlg, CDialogEx)
 	ON_WM_SIZE()
 	ON_BN_CLICKED(IDC_BUTTON_TEST0, &Cmfc_transparent_buttonDlg::OnBnClickedButtonTest0)
 	ON_WM_LBUTTONDOWN()
+	ON_BN_CLICKED(IDC_BUTTON_MINIMIZE, &Cmfc_transparent_buttonDlg::OnBnClickedButtonMinimize)
+	ON_BN_CLICKED(IDC_BUTTON_CLOSE, &Cmfc_transparent_buttonDlg::OnBnClickedButtonClose)
 END_MESSAGE_MAP()
 
 
@@ -107,6 +112,13 @@ BOOL Cmfc_transparent_buttonDlg::OnInitDialog()
 	bitmap.LoadBitmap(IDB_BACKGROUND);
 	m_brush.CreatePatternBrush(&bitmap);
 	bitmap.DeleteObject();
+
+	m_button_test0.Load(IDB_BUTTON, 244);
+
+	m_button_minimize.SetAutoSize(false);
+	m_button_close.SetAutoSize(false);
+	m_button_minimize.Load(IDB_MINIMIZE, 28);
+	m_button_close.Load(IDB_CLOSE, 39);
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -266,4 +278,16 @@ void Cmfc_transparent_buttonDlg::OnLButtonDown(UINT nFlags, CPoint point)
 void Cmfc_transparent_buttonDlg::OnBnClickedButtonTest0()
 {
 	// TODO: Add your control notification handler code here
+}
+
+void Cmfc_transparent_buttonDlg::OnBnClickedButtonMinimize()
+{
+	// TODO: Add your control notification handler code here
+	PostMessage(WM_SYSCOMMAND, SC_MINIMIZE);
+}
+
+void Cmfc_transparent_buttonDlg::OnBnClickedButtonClose()
+{
+	// TODO: Add your control notification handler code here
+	PostMessage(WM_CLOSE, 0, 0);
 }

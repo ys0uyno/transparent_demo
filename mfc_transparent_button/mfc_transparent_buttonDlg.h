@@ -3,6 +3,7 @@
 //
 
 #pragma once
+#include "transparent_button.h"
 
 
 // Cmfc_transparent_buttonDlg dialog
@@ -38,4 +39,9 @@ public:
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnBnClickedButtonMinimize();
+	afx_msg void OnBnClickedButtonClose();
+	transparent_button m_button_minimize;
+	transparent_button m_button_close;
+	transparent_button m_button_test0;
 };
