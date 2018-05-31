@@ -183,7 +183,7 @@ void transparent_button::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 		DrawBK(*pDC, m_button_png_disable.pimage, BUTTON_DISABLE);
 	}
 	else if(lpDrawItemStruct->itemState & ODS_SELECTED
-		||(m_b_ishover && m_b_isclicked) )
+		|| (m_b_ishover && m_b_isclicked))
 	{
 		DrawBK(*pDC, m_button_png_click.pimage, BUTTON_CLICK);
 	}
@@ -202,20 +202,20 @@ void transparent_button::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	{
 		if(lpDrawItemStruct->itemState & ODS_DISABLED)
 		{
-			DrawButtonText(*pDC,strText,0, BUTTON_DISABLE);
+			DrawButtonText(*pDC, strText, 0, BUTTON_DISABLE);
 		}
 		else if(lpDrawItemStruct->itemState & ODS_SELECTED
-			||(m_b_ishover && m_b_isclicked) )
+			|| (m_b_ishover && m_b_isclicked))
 		{
-			DrawButtonText(*pDC, strText,1, BUTTON_CLICK);
+			DrawButtonText(*pDC, strText, 1, BUTTON_CLICK);
 		}
 		else if(m_b_ishover)
 		{
-			DrawButtonText(*pDC, strText,0, BUTTON_HOVER);
+			DrawButtonText(*pDC, strText, 0, BUTTON_HOVER);
 		}
 		else
 		{
-			DrawButtonText(*pDC, strText,0, BUTTON_NORMAL);
+			DrawButtonText(*pDC, strText, 0, BUTTON_NORMAL);
 		}
 	}
 }
@@ -422,7 +422,7 @@ void transparent_button::OnLButtonDown(UINT nFlags, CPoint point)
 	CButton::OnLButtonDown(nFlags, point);
 }
 
-BOOL transparent_button::OnEraseBkgnd(CDC* pDC)
+BOOL transparent_button::OnEraseBkgnd(CDC *pDC)
 {
 	if(GetButtonStyle() & BS_OWNERDRAW)
 	{
